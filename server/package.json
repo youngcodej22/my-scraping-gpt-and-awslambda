@@ -1,0 +1,22 @@
+{
+    "name": "my-scraping-gpt-and-awslambda",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "repository": "https://github.com/youngcodej22/my-scraping-gpt-and-awslambda.git",
+    "author": "YeongBaeJi <youngcodej22@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "nodemon": "^3.1.4",
+        "openai": "^4.57.0",
+        "puppeteer": "^23.2.2",
+        "puppeteer-core": "^23.2.1"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon src/index.js"
+    }
+}

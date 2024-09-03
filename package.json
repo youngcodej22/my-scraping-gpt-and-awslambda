@@ -1,0 +1,16 @@
+{
+    "name": "my-scraping-gpt-and-awslambda",
+    "private": true,
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/youngcodej22/my-scraping-gpt-and-awslambda.git",
+    "author": "YeongBaeJi <youngcodej22@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    },
+    "scripts": {
+        "start": "concurrently \"npm run dev --prefix client\" \"npm run start --prefix server\""
+    },
+    "dependencies": {}
+}

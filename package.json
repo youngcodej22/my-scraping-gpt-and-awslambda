@@ -12,5 +12,7 @@
     "scripts": {
         "start": "concurrently \"npm run dev --prefix client\" \"npm run start --prefix server\""
     },
-    "dependencies": {}
+    "dependencies": {
+        "dotenv": "^16.4.5"
+    }
 }

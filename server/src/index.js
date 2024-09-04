@@ -1,19 +1,21 @@
-// import { createRequire } from "module";
-// const require = createRequire(import.meta.url);
 import express from "express";
 import cors from "cors";
 // import puppeteer from "puppeteer-core";
 import puppeteer from "puppeteer";
 import generateContentFunc from "./generateContent.js";
 
+// 예시) /ask라는 경로로 api 호출 요청이 오면 라우터를 한단계 더 두고 분기처리
+const router = express.Router();
 const app = express();
-const PORT = 4000;
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 app.use(cors());
+app.use(express.json()); // 파라미터가 application/json 이런 형태로 들어오면 파싱
+app.use(express.urlencoded({ extended: true })); // 파라미터가 application/x-www-form-urlencoded 형태로 들어오면 파싱
 
-app.get("/api", (req, res) => {
+// 라우터 - 이 경로로 api 호출 요청이 오면 라우터를 한단계 더 두고 분기처리
+app.use("/", router);
+
+router.get("/api", (req, res) => {
     res.json({
         message: "Hello world",
     });
@@ -24,7 +26,7 @@ const database = [];
 //👇🏻 generates a random string as ID
 const generateID = () => Math.random().toString(36).substring(2, 10);
 
-app.post("/api/url", (req, res) => {
+router.post("/api/url", (req, res) => {
     const { url } = req.body;
     console.log("url:", url);
 
@@ -66,9 +68,6 @@ app.post("/api/url", (req, res) => {
             }
         });
 
-        // const { brandName, brandDescription } = await generateContentFunc(
-        //     websiteContent
-        // );
         let result = await generateContentFunc(websiteContent, imgBase64);
         //👇🏻 adds the brand image and ID to the result
         result.brandImage = websiteOgImage;
@@ -78,28 +77,18 @@ app.post("/api/url", (req, res) => {
 
         await browser.close();
 
-        console.log({
-            websiteContent,
-            websiteOgImage,
-            brandName,
-            brandDescription,
-        });
-
-        //👇🏻 returns the results
-        return res.json({
-            message: "Request successful!",
-            database,
-        });
-
-        // res.json({
-        //     websiteContent,
-        //     websiteOgImage,
-        //     brandName,
-        //     brandDescription,
-        // });
+        if (result) {
+            return res.json({
+                message: "Request successful!",
+                database,
+            });
+        } else {
+            return res.status(500).json({ error: "실패" });
+        }
     })();
 });
 
+const PORT = 4000;
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });

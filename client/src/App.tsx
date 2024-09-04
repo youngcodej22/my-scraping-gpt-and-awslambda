@@ -14,8 +14,8 @@ const App = () => {
         sendURL();
     };
     //👇🏻 remove the quotation marks around the description
-    const trimDescription = (content) =>
-        content.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
+    // const trimDescription = (content) =>
+    //     content.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "");
 
     async function sendURL() {
         try {
@@ -29,7 +29,15 @@ const App = () => {
                     "Content-Type": "application/json",
                 },
             });
+
+            console.log("**request**", request);
+
+            if (!request.ok) {
+                throw new Error(`HTTP error! status: ${request.status}`);
+            }
+
             const data = await request.json();
+            console.log("🚀 ~ sendURL ~ data:", data);
             //👇🏻 toggles the loading state if the request is successful
             if (data.message) {
                 setLoading(false);
@@ -37,15 +45,8 @@ const App = () => {
                 setWebsiteContent(data.database);
             }
         } catch (err) {
-            // console.error(err);
-            if (err.code === "insufficient_quota") {
-                console.error(
-                    "Quota exceeded. Please check your plan and billing details."
-                );
-                // Optionally, implement a retry mechanism with a delay
-            } else {
-                console.error(err);
-            }
+            console.error("Fetch error:", err);
+            setLoading(false);
         }
     }
 
@@ -55,7 +56,7 @@ const App = () => {
 
     return (
         <div className="home">
-            <form className="home__form">
+            <form className="home__form" onSubmit={handleSubmit}>
                 <h2>Website Aggregator</h2>
                 <label htmlFor="url">Provide the website URL</label>
                 <input
@@ -65,14 +66,15 @@ const App = () => {
                     value={url}
                     onChange={(e) => setURL(e.target.value)}
                 />
-                <button onClick={handleSubmit}>ADD WEBSITE</button>
+                <button type="submit">ADD WEBSITE</button>
             </form>
             <main className="website__container ">
                 {websiteContent.map((item) => (
                     <div className="website__item" key={item.id}>
                         <img src={item?.brandImage} alt={item?.brandName} />
                         <h3>{item?.brandName}</h3>
-                        <p>{trimDescription(item?.brandDescription)}</p>
+                        {/* <p>{trimDescription(item?.brandDescription)}</p> */}
+                        <p>{item?.brandDescription}</p>
                     </div>
                 ))}
             </main>

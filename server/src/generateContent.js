@@ -1,7 +1,8 @@
 // import OpenAI from "openai";
 import "dotenv/config";
 
-async function generateContentFunc(content, imgBase64) {
+// async function generateContentFunc(content, imgBase64) {
+async function generateContentFunc(content) {
     // const openai = new OpenAI({
     //     apiKey: process.env.OPENAI_API_KEY,
     // });
@@ -50,6 +51,8 @@ async function generateContentFunc(content, imgBase64) {
         // });
         // const brandDescriptionResponse = await openai.chat.completions.create({
         //     // model: "gpt-4o-mini",
+        //     // 이미지 캡쳐 사용 시
+        //     // model: "gpt-4-vision-preview",
         //     model: "gpt-3.5-turbo",
         //     messages: [
         //         {
@@ -98,6 +101,9 @@ async function generateContentFunc(content, imgBase64) {
 
         const brandNameResponse = `BrandName: ${content}`;
         const brandDescriptionResponse = `BrandDescription: ${content}`;
+
+        // console.log("**res-name**", brandNameResponse);
+        // console.log("**res-desc**", brandDescriptionResponse);
 
         return {
             brandName: brandNameResponse,

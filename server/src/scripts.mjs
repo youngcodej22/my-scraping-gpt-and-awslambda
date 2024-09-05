@@ -32,6 +32,8 @@ async function callChatGPT(prompt) {
         });
 
         const result = await openai.chat.completions.create({
+            // 이미지 캡쳐 사용 시
+            // model: "gpt-4-vision-preview",
             model: "gpt-3.5-turbo",
             messages: [
                 // 1. GPT가 헛소리 하지 못하게 교육시키는 샘플
